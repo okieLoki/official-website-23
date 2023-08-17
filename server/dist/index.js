@@ -9,6 +9,7 @@ const cors_1 = __importDefault(require("cors"));
 const dbConfig_1 = __importDefault(require("./config/dbConfig"));
 const teamRoute_1 = require("./routes/teamRoute");
 const eventRoute_1 = require("./routes/eventRoute");
+const projectRoute_1 = require("./routes/projectRoute");
 const app = (0, express_1.default)();
 // db connection
 (0, dbConfig_1.default)();
@@ -21,6 +22,7 @@ app.use(express_1.default.json());
 // routes
 app.use('/api/team', teamRoute_1.teamRoute);
 app.use('/api/event', eventRoute_1.eventRoute);
+app.use('/api/project', projectRoute_1.projectRoute);
 app.listen(8080, () => {
     console.log('Server is running on port 8080');
 });

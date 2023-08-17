@@ -14,20 +14,16 @@ import axios from 'axios';
 import postDetails from '../api/postDetails';
 import '../styles/AddPage.css'
 
-const AddEvent = () => {
+const AddProject = () => {
     const toast = useToast();
 
-    const [title, setTitle] = useState('');
+    const [name, setName] = useState('');
     const [image, setImage] = useState('');
-    const [venue, setVenue] = useState('');
-    const [date, setDate] = useState('');
-    const [time, setTime] = useState('');
-    const [end_date, setEndDate] = useState('');
-    const [end_time, setEndTime] = useState('');
-    const [link, setLink] = useState('');
-    const [topicsStr, setTopicsStr] = useState('')
-    const [topics, setTopics] = useState<string[]>([]);
-    const [info, setInfo] = useState('');
+    const [projectLead, setProjectLead] = useState('');
+    const [githubLink, setDate] = useState('');
+    const [description, setDescription] = useState('');
+    const [membersStr, setMembersStr] = useState('')
+    const [members, setMembers] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
 
     const handleImageUpload = async (e: any) => {
@@ -40,7 +36,7 @@ const AddEvent = () => {
 
     const handleAddEvent = async () => {
         try {
-            if (!title || !image || !venue || !date || !time || !info || !link) {
+            if (!name || !image || !projectLead || !githubLink || !description) {
                 toast({
                     title: 'Error',
                     description: 'Please fill all the required fields.',
@@ -52,27 +48,24 @@ const AddEvent = () => {
                 return;
             }
 
-            if (topicsStr.trim() !== '') {
-                setTopics(topicsStr.split(' '));
-            }
+                 
+            setMembers(membersStr.split('\n'))
+            setMembers(members.filter((member) => member !== ''))
+            
 
-            const response = await axios.post('http://localhost:8080/api/event', {
-                title,
+            const response = await axios.post('http://localhost:8080/api/project', {
+                name,
                 image,
-                venue,
-                date,
-                time,
-                end_date,
-                end_time,
-                link,
-                topics,
-                info,
+                project_lead: projectLead,
+                github_link: githubLink,
+                description,
+                members,
             });
 
             if (response.status === 201) {
                 toast({
                     title: 'Success',
-                    description: 'Event added successfully.',
+                    description: 'Project added successfully.',
                     status: 'success',
                     duration: 3000,
                     isClosable: true,
@@ -105,12 +98,14 @@ const AddEvent = () => {
         <div className="app-container">
             <div className="form">
                 <VStack spacing={4}>
+
+
                     <FormControl isRequired>
-                        <FormLabel>Event Title</FormLabel>
+                        <FormLabel>Project Title</FormLabel>
                         <Input
                             type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                         />
                     </FormControl>
 
@@ -118,13 +113,13 @@ const AddEvent = () => {
                         <FormLabel>Upload Picture</FormLabel>
                         <FormHelperText>Image size should be less than 1MB</FormHelperText>
                         <Input
-                            id='profilepic'
+                            id='pic_upload'
                             type='file'
                             accept='image/*'
                             display='none'
                             onChange={handleImageUpload}
                         />
-                        <label htmlFor='profilepic'>
+                        <label htmlFor='pic_upload'>
                             <Box
                                 as='div'
                                 cursor='pointer'
@@ -141,77 +136,42 @@ const AddEvent = () => {
                     </FormControl>
 
                     <FormControl isRequired>
-                        <FormLabel>Venue</FormLabel>
+                        <FormLabel>Project Lead</FormLabel>
                         <Input
                             type="text"
-                            value={venue}
-                            onChange={(e) => setVenue(e.target.value)}
+                            value={projectLead}
+                            onChange={(e) => setProjectLead(e.target.value)}
                         />
                     </FormControl>
 
                     <FormControl isRequired>
-                        <FormLabel>Date</FormLabel>
+                        <FormLabel>Github Link</FormLabel>
                         <Input
-                            type="date"
-                            value={date}
+                            type="text"
+                            value={githubLink}
                             onChange={(e) => setDate(e.target.value)}
                         />
                     </FormControl>
 
                     <FormControl isRequired>
-                        <FormLabel>Time</FormLabel>
-                        <Input
-                            type="time"
-                            value={time}
-                            onChange={(e) => setTime(e.target.value)}
-                        />
-                    </FormControl>
-
-                    <FormControl>
-                        <FormLabel>End Date</FormLabel>
-                        <Input
-                            type="date"
-                            value={end_date}
-                            onChange={(e) => setEndDate(e.target.value)}
-                        />
-                    </FormControl>
-
-                    <FormControl>
-                        <FormLabel>End Time</FormLabel>
-                        <Input
-                            type="time"
-                            value={end_time}
-                            onChange={(e) => setEndTime(e.target.value)}
-                        />
-                    </FormControl>
-
-                    <FormControl isRequired>
-                        <FormLabel>Link</FormLabel>
+                        <FormLabel>Description</FormLabel>
                         <Input
                             type="text"
-                            value={venue}
-                            onChange={(e) => setLink(e.target.value)}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormControl>
 
                     <FormControl>
-                        <FormLabel>Topics</FormLabel>
+                        <FormLabel>Members</FormLabel>
                         <Textarea
-                            value={topicsStr}
-                            onChange={(e) => setTopicsStr(e.target.value)}
-                        />
-                    </FormControl>
-
-                    <FormControl isRequired>
-                        <FormLabel>Event Info</FormLabel>
-                        <Textarea
-                            value={info}
-                            onChange={(e) => setInfo(e.target.value)}
+                            value={membersStr}
+                            onChange={(e) => setMembersStr(e.target.value)}
                         />
                     </FormControl>
 
                     <Button colorScheme="teal" onClick={handleAddEvent} isLoading={loading}>
-                        Add Event
+                        Add Project
                     </Button>
                 </VStack>
             </div>
@@ -219,4 +179,4 @@ const AddEvent = () => {
     );
 };
 
-export default AddEvent;
+export default AddProject;

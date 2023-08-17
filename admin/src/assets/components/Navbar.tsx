@@ -30,6 +30,11 @@ const Navbar = () => {
                             Event
                         </a>
                     </li>
+                    <li className="nav-item">
+                        <a href="/project/view" className="nav-links">
+                            Project
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>

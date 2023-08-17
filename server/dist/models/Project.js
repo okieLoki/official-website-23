@@ -4,9 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const memberSchema = new mongoose_1.default.Schema({
-    name: String,
-});
 const projectSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
@@ -29,7 +26,7 @@ const projectSchema = new mongoose_1.default.Schema({
         required: true
     },
     members: {
-        type: [memberSchema],
+        type: [String],
     }
 });
 const Project = mongoose_1.default.model("Project", projectSchema);

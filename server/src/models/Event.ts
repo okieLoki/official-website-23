@@ -27,6 +27,10 @@ const eventSchema = new mongoose.Schema({
     end_time: {
         type: String,
     },
+    link: {
+        type: String,
+        required: true
+    },
     topics: [String],
     info: {
         type: String,

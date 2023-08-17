@@ -4,6 +4,7 @@ import cors from 'cors'
 import connectDb from './config/dbConfig'
 import { teamRoute } from './routes/teamRoute'
 import { eventRoute } from './routes/eventRoute'
+import { projectRoute } from './routes/projectRoute'
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.use(express.json())
 // routes
 app.use('/api/team', teamRoute)
 app.use('/api/event', eventRoute)
+app.use('/api/project', projectRoute)
 
 app.listen(8080, () => {
     console.log('Server is running on port 8080')

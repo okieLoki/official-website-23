@@ -1,9 +1,5 @@
 import mongoose from "mongoose";
 
-const memberSchema = new mongoose.Schema({
-    name: String,
-})
-
 const projectSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -26,7 +22,7 @@ const projectSchema = new mongoose.Schema({
         required: true
     },
     members: {
-        type: [memberSchema],
+        type: [String],
     }
 })
 

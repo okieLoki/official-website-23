@@ -4,6 +4,8 @@ import AddTeam from './assets/pages/AddTeam.tsx';
 import ViewTeam from './assets/pages/ViewTeam.tsx';
 import AddEvent from './assets/pages/AddEvent.tsx';
 import ViewEvent from './assets/pages/ViewEvent.tsx';
+import AddProject from './assets/pages/AddProject.tsx';
+import ViewProject from './assets/pages/ViewProject.tsx';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
   {
     path: '/event/view',
     element: <ViewEvent />,
+  },
+  {
+    path: '/project/add',
+    element: <AddProject />,
+  },
+  {
+    path: '/project/view',
+    element: <ViewProject />,
   }
 ]);
 

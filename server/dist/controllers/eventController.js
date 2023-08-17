@@ -7,9 +7,9 @@ exports.deleteEvent = exports.getEvents = exports.addEvent = void 0;
 const Event_1 = __importDefault(require("../models/Event"));
 const addEvent = async (req, res) => {
     try {
-        const { title, image, venue, date, time, end_date, end_time, topics, info } = req.body;
+        const { title, image, venue, date, time, end_date, end_time, link, topics, info } = req.body;
         // Check if mandatory fields are present
-        if (!title || !image || !venue || !date || !time || !info) {
+        if (!title || !image || !venue || !date || !time || !info || !link) {
             return res.status(400).json({
                 message: 'Mandatory fields are missing'
             });
