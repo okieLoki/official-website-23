@@ -15,7 +15,8 @@ import {
     ModalCloseButton,
     Image,
     useDisclosure,
-    Box
+    Box,
+    Input
 } from '@chakra-ui/react';
 import { FaEye, FaTrash } from 'react-icons/fa';
 import '../styles/ViewPage.css'
@@ -37,6 +38,8 @@ const ViewEvent = () => {
     const [events, setEvents] = useState<Event[]>([]);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [selectedImage, setSelectedImage] = useState<string>('');
+    const [searchCriteria, setSearchCriteria] = useState('title');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const formatDate = (date: string): string => {
         const inputDate = new Date(date);
@@ -72,6 +75,60 @@ const ViewEvent = () => {
     return (
         <div className='table-page'>
             <Box className='table-container' overflowX='auto'>
+
+                <div className="filter">
+                    <Input
+                        width={'50%'}
+                        alignSelf={'center'}
+                        type="text"
+                        placeholder='Search'
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className='search-input'
+                    />
+
+                    <div className="search-criteria">
+                        <span>Search by:</span>
+                        <Button
+                            size="sm"
+                            variant={searchCriteria === 'title' ? 'solid' : 'outline'}
+                            onClick={() => setSearchCriteria('title')}
+                        >
+                            Title
+                        </Button>
+                        <Button
+                            size="sm"
+                            variant={searchCriteria === 'venue' ? 'solid' : 'outline'}
+                            onClick={() => setSearchCriteria('venue')}
+                        >
+                            Venue
+                        </Button>
+                        <Button
+                            size="sm"
+                            variant={searchCriteria === 'info' ? 'solid' : 'outline'}
+                            onClick={() => setSearchCriteria('info')}
+                        >
+                            Info
+                        </Button>
+                    </div>
+
+                    <div>
+                        <a href="/event/add">
+                            <Button
+                                colorScheme="teal"
+                                size="sm"
+                                onClick={() => console.log('Floating Button Clicked')}
+                            >
+                                Add Event
+                            </Button>
+                        </a>
+                    </div>
+
+                </div>
+
+                <hr />
+
+
                 <Table variant='simple' >
                     <Thead>
                         <Tr>
@@ -88,28 +145,42 @@ const ViewEvent = () => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {events.map(event => (
-                            <Tr key={event._id}>
-                                <Td>{event.title}</Td>
-                                <Td>{event.venue}</Td>
-                                <Td>{formatDate(event.date)}</Td>
-                                <Td>{event.time}</Td>
-                                <Td>{formatDate(event.date)}</Td>
-                                <Td>{event.end_time}</Td>
-                                <Td>{event.topics.join(', ')}</Td>
-                                <Td>{event.info}</Td>
-                                <Td>
-                                    <a onClick={() => handleImageClick(event.image)}>
-                                        <FaEye size={24} />
-                                    </a>
-                                </Td>
-                                <Td>
-                                    <Button colorScheme='red' size='sm' onClick={() => handleDelete(event._id)}>
-                                        <FaTrash size={24} />
-                                    </Button>
-                                </Td>
-                            </Tr>
-                        ))}
+                        {events
+                            .filter((event) => {
+                                const searchValue = searchQuery.toLowerCase();
+
+                                if (searchCriteria === 'title') {
+                                    return event.title.toLowerCase().includes(searchValue);
+                                } else if (searchCriteria === 'venue') {
+                                    return event.venue.toLowerCase().includes(searchValue);
+                                } else if (searchCriteria === 'info') {
+                                    return event.info.toLowerCase().includes(searchValue);
+                                }
+
+                                return false;
+                            })
+                            .map(event => (
+                                <Tr key={event._id}>
+                                    <Td>{event.title}</Td>
+                                    <Td>{event.venue}</Td>
+                                    <Td>{formatDate(event.date)}</Td>
+                                    <Td>{event.time}</Td>
+                                    <Td>{formatDate(event.date)}</Td>
+                                    <Td>{event.end_time}</Td>
+                                    <Td>{event.topics.join(', ')}</Td>
+                                    <Td>{event.info}</Td>
+                                    <Td>
+                                        <a onClick={() => handleImageClick(event.image)}>
+                                            <FaEye size={24} />
+                                        </a>
+                                    </Td>
+                                    <Td>
+                                        <Button colorScheme='red' size='sm' onClick={() => handleDelete(event._id)}>
+                                            <FaTrash size={24} />
+                                        </Button>
+                                    </Td>
+                                </Tr>
+                            ))}
                     </Tbody>
                 </Table>
                 <Modal isOpen={isOpen} onClose={onClose}>

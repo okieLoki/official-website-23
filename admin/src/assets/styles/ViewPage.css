@@ -1,6 +1,21 @@
+.search-criteria {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 80px;
+    margin-bottom: 50px;
+}
+
 .table-container {
     padding: 20px;
-    position: relative;
     margin: 100px 20px 0px 20px;
 
 
@@ -19,3 +34,5 @@
 
     }
 }
+
+

@@ -16,7 +16,8 @@ import {
     Image,
     useDisclosure,
     Link,
-    Box
+    Box,
+    Input
 } from '@chakra-ui/react';
 import { FaEye, FaTrash, FaLinkedin, FaGithub, FaTwitter, FaMedium } from 'react-icons/fa';
 import '../styles/ViewPage.css'
@@ -42,6 +43,8 @@ const TeamTable = () => {
     const [teamData, setTeamData] = useState<TeamData>({ lead: [], 'co-lead': [], mentor: [], core: [] });
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [selectedImage, setSelectedImage] = useState<string>('');
+    const [searchCriteria, setSearchCriteria] = useState('name');
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/team')
@@ -74,7 +77,63 @@ const TeamTable = () => {
 
     return (
         <div className='table-page'>
+
+
             <Box className='table-container' overflowX='auto'>
+
+                <div className="filter">
+                    <Input
+                        width={'50%'}
+                        alignSelf={'center'}
+                        type="text"
+                        placeholder='Search'
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className='search-input'
+                    />
+
+                    <div className="search-criteria">
+                        <span>Search by:</span>
+                        <Button
+                            size="sm"
+                            variant={searchCriteria === 'name' ? 'solid' : 'outline'}
+                            onClick={() => setSearchCriteria('name')}
+                        >
+                            Name
+                        </Button>
+                        <Button
+                            size="sm"
+                            variant={searchCriteria === 'position' ? 'solid' : 'outline'}
+                            onClick={() => setSearchCriteria('position')}
+                        >
+                            Position
+                        </Button>
+                        <Button
+                            size="sm"
+                            variant={searchCriteria === 'role' ? 'solid' : 'outline'}
+                            onClick={() => setSearchCriteria('role')}
+                        >
+                            Role
+                        </Button>
+                    </div>
+
+                    <div>
+                        <a href="/team/add">
+                            <Button
+                                colorScheme="teal"
+                                size="sm"
+                                onClick={() => console.log('Floating Button Clicked')}
+                            >
+                                Add Member
+                            </Button>
+                        </a>
+                    </div>
+
+                </div>
+
+                <hr />
+
+
                 <Table variant='simple' >
                     <Thead>
                         <Tr>
@@ -92,52 +151,66 @@ const TeamTable = () => {
                     </Thead>
                     <Tbody>
                         {Object.keys(teamData).map(position => (
-                            teamData[position].map(member => (
-                                <Tr key={member._id}>
-                                    <Td>{member.name}</Td>
-                                    <Td>{member.position.toUpperCase()}</Td>
-                                    <Td>{member.role.toUpperCase()}</Td>
-                                    <Td>{member.email}</Td>
-                                    <Td>
-                                        {member.linkedin_url && (
-                                            <Link href={member.linkedin_url} target="_blank" rel="noopener noreferrer">
-                                                <FaLinkedin size={24} />
-                                            </Link>
-                                        )}
-                                    </Td>
-                                    <Td>
-                                        {member.github_url && (
-                                            <Link href={member.github_url} target="_blank" rel="noopener noreferrer">
-                                                <FaGithub size={24} />
-                                            </Link>
-                                        )}
-                                    </Td>
-                                    <Td>
-                                        {member.twitter_url && (
-                                            <Link href={member.twitter_url} target="_blank" rel="noopener noreferrer">
-                                                <FaTwitter size={24} />
-                                            </Link>
-                                        )}
-                                    </Td>
-                                    <Td>
-                                        {member.medium_url && (
-                                            <Link href={member.medium_url} target="_blank" rel="noopener noreferrer">
-                                                <FaMedium size={24} />
-                                            </Link>
-                                        )}
-                                    </Td>
-                                    <Td>
-                                        <a onClick={() => handleImageClick(member.image)}>
-                                            <FaEye size={24} />
-                                        </a>
-                                    </Td>
-                                    <Td>
-                                        <Button colorScheme='red' size='sm' onClick={() => handleDelete(member._id)}>
-                                            <FaTrash size={24} />
-                                        </Button>
-                                    </Td>
-                                </Tr>
-                            ))
+                            teamData[position]
+                                .filter((member) => {
+                                    const searchValue = searchQuery.toLowerCase();
+
+                                    if (searchCriteria === 'name') {
+                                        return member.name.toLowerCase().includes(searchValue);
+                                    } else if (searchCriteria === 'position') {
+                                        return member.position.toLowerCase().includes(searchValue);
+                                    } else if (searchCriteria === 'role') {
+                                        return member.role.toLowerCase().includes(searchValue);
+                                    }
+
+                                    return false;
+                                })
+                                .map(member => (
+                                    <Tr key={member._id}>
+                                        <Td>{member.name}</Td>
+                                        <Td>{member.position.toUpperCase()}</Td>
+                                        <Td>{member.role.toUpperCase()}</Td>
+                                        <Td>{member.email}</Td>
+                                        <Td>
+                                            {member.linkedin_url && (
+                                                <Link href={member.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                                    <FaLinkedin size={24} />
+                                                </Link>
+                                            )}
+                                        </Td>
+                                        <Td>
+                                            {member.github_url && (
+                                                <Link href={member.github_url} target="_blank" rel="noopener noreferrer">
+                                                    <FaGithub size={24} />
+                                                </Link>
+                                            )}
+                                        </Td>
+                                        <Td>
+                                            {member.twitter_url && (
+                                                <Link href={member.twitter_url} target="_blank" rel="noopener noreferrer">
+                                                    <FaTwitter size={24} />
+                                                </Link>
+                                            )}
+                                        </Td>
+                                        <Td>
+                                            {member.medium_url && (
+                                                <Link href={member.medium_url} target="_blank" rel="noopener noreferrer">
+                                                    <FaMedium size={24} />
+                                                </Link>
+                                            )}
+                                        </Td>
+                                        <Td>
+                                            <a onClick={() => handleImageClick(member.image)}>
+                                                <FaEye size={24} />
+                                            </a>
+                                        </Td>
+                                        <Td>
+                                            <Button colorScheme='red' size='sm' onClick={() => handleDelete(member._id)}>
+                                                <FaTrash size={24} />
+                                            </Button>
+                                        </Td>
+                                    </Tr>
+                                ))
                         ))}
                     </Tbody>
 

@@ -21,23 +21,13 @@ const Navbar = () => {
                 </div>
                 <ul className={isMenuOpen ? 'nav-menu active' : 'nav-menu'}>
                     <li className="nav-item">
-                        <a href="/team/add" className="nav-links">
-                            Add Team
-                        </a>
-                    </li>
-                    <li className="nav-item">
                         <a href="/team/view" className="nav-links">
-                            View Team
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a href="/event/add" className="nav-links">
-                            Add Event
+                            Team
                         </a>
                     </li>
                     <li className="nav-item">
                         <a href="/event/view" className="nav-links">
-                            View Event
+                            Event
                         </a>
                     </li>
                 </ul>
