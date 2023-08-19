@@ -10,6 +10,11 @@ const Navbar = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const logout = () => {
+        localStorage.removeItem('isLoggedIn');
+        window.location.reload();
+    }
+
     return (
         <nav className="navbar">
             <div className="navbar-container">
@@ -33,6 +38,11 @@ const Navbar = () => {
                     <li className="nav-item">
                         <a href="/project/view" className="nav-links">
                             Project
+                        </a>
+                    </li>
+                    <li className="nav-item">
+                        <a href="/" className="nav-links" onClick={logout}>
+                            Logout
                         </a>
                     </li>
                 </ul>

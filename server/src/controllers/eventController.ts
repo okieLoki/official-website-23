@@ -3,6 +3,7 @@ import Event from "../models/Event";
 
 const addEvent = async (req: Request, res: Response) => {
 
+
     try {
         const { title, image, venue, date, time, end_date, end_time, link, topics, info } = req.body;
 

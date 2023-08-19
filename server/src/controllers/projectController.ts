@@ -1,7 +1,8 @@
 import Project from "../models/Project";
+import { Request, Response } from "express";
 
 
-const addProject = async (req: any, res: any) => {
+const addProject = async (req: Request, res: Response) => {
 
     try {
         const { name, image, project_lead, github_link, description, members } = req.body;
