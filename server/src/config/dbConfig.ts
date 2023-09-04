@@ -1,15 +1,9 @@
 import mongoose from "mongoose";
 
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      MONGO_URI: string;
-    }
-  }
-}
+const CONNECTION_URL = String(process.env.MONGO_URI);
 
 async function connectDb() {
-  await mongoose.connect(process.env.MONGO_URI);
+  await mongoose.connect(CONNECTION_URL);
 }
 
 export default connectDb

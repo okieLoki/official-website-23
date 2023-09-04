@@ -20,7 +20,7 @@ import {
     Input
 } from '@chakra-ui/react';
 import { FaEye, FaTrash, FaGithub } from 'react-icons/fa';
-import '../styles/ViewPage.css'
+import '../styles/ViewPage.css';
 import Navbar from '../components/Navbar';
 
 interface Project {
@@ -73,21 +73,10 @@ const ViewProject = () => {
         <>
             <Navbar />
             <div className='table-page'>
-                <Box className='table-container' overflowX='auto'>
+                <Box className='table-container'>
 
                     <div className="filter">
-                        <Input
-                            width={'50%'}
-                            alignSelf={'center'}
-                            type="text"
-                            placeholder='Search'
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className='search-input'
-                        />
-
-                        <div className="search-criteria">
-                            <span>Search by:</span>
+                        <div className="internal-div">
                             <Button
                                 size="sm"
                                 variant={searchCriteria === 'name' ? 'solid' : 'outline'}
@@ -110,58 +99,57 @@ const ViewProject = () => {
                                 Description
                             </Button>
                         </div>
-
-                        <div>
-                            <a href="/project/add">
-                                <Button
-                                    colorScheme="teal"
-                                    size="sm"
-                                    onClick={() => console.log('Floating Button Clicked')}
-                                >
-                                    Add Project
-                                </Button>
-                            </a>
-                        </div>
-
+                        <Input
+                            width={['100%', '50%']}
+                            alignSelf="center"
+                            type="text"
+                            placeholder="Search"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="search-input"
+                        />
+                        <a href="/project/add">
+                            <Button
+                                colorScheme="teal"
+                                size="sm"
+                                onClick={() => console.log('Floating Button Clicked')}
+                                className='add-project-button'
+                            >
+                                Add Project
+                            </Button>
+                        </a>
                     </div>
 
-
-
-                    <Table variant='simple'>
-                        <Thead>
-                            <Tr>
-                                <Th>Name</Th>
-                                <Th>Project Lead</Th>
-                                <Th>Description</Th>
-                                <Th>GitHub</Th>
-                                <Th>Image</Th>
-                                <Th>Delete</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            {projectData
-                                .filter((proj) => {
-                                    const searchValue = searchQuery.toLowerCase();
-
-                                    if (searchCriteria === 'name') {
-                                        return proj.name.toLowerCase().includes(searchValue);
-                                    } else if (searchCriteria === 'project_lead') {
-                                        return proj.project_lead.toLowerCase().includes(searchValue);
-                                    } else if (searchCriteria === 'description') {
-                                        return proj.description.toLowerCase().includes(searchValue);
-                                    }
-
-                                    return false;
-                                })
-                                .map(project => (
+                    <Box className="table-wrapper" overflowX='auto'>
+                        <Table variant='simple'>
+                            <Thead>
+                                <Tr>
+                                    <Th>Name</Th>
+                                    <Th>Project Lead</Th>
+                                    <Th>Description</Th>
+                                    <Th>Members</Th>
+                                    <Th>GitHub</Th>
+                                    <Th>Image</Th>
+                                    <Th>Delete</Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                {projectData.map(project => (
                                     <Tr key={project._id}>
                                         <Td>{project.name}</Td>
                                         <Td>{project.project_lead}</Td>
                                         <Td>{project.description}</Td>
+                                        <Td>{
+                                            project.members?.map((member, id) => {
+                                                return <div key={id}>
+                                                    {member}
+                                                </div>
+                                            })
+                                        }</Td>
                                         <Td>
-                                            <Link href={project.github_link} target="_blank" rel="noopener noreferrer">
+                                            <a href={project.github_link} target="_blank" rel="noopener noreferrer">
                                                 <FaGithub size={24} />
-                                            </Link>
+                                            </a>
                                         </Td>
                                         <Td>
                                             <a onClick={() => handleImageClick(project.image)}>
@@ -175,18 +163,31 @@ const ViewProject = () => {
                                         </Td>
                                     </Tr>
                                 ))}
-                        </Tbody>
-                    </Table>
-                    <Modal isOpen={isOpen} onClose={onClose}>
-                        <ModalOverlay />
-                        <ModalContent>
-                            <ModalCloseButton />
-                            <ModalBody>
-                                <Image src={selectedImage} alt='Project Image' />
-                            </ModalBody>
-                        </ModalContent>
-                    </Modal>
+                            </Tbody>
+                        </Table>
+                        <Modal isOpen={isOpen} onClose={onClose}>
+                            <ModalOverlay />
+                            <ModalContent>
+                                <ModalCloseButton />
+                                <ModalBody>
+                                    <Image src={selectedImage} alt='Project Image' />
+                                </ModalBody>
+                            </ModalContent>
+                        </Modal>
+                    </Box>
                 </Box>
+
+                <a href="/project/add" className="floating-add-button">
+                    <Button
+                        colorScheme="teal"
+                        size="lg"
+                        position="fixed"
+                        bottom="20px"
+                        left="20px"
+                    >
+                        +
+                    </Button>
+                </a>
             </div>
         </>
     );

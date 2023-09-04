@@ -51,8 +51,8 @@ const AddProject = () => {
 
 
             setMembers(membersStr.split('\n'))
-            setMembers(members.filter((member) => member !== ''))
-
+            console.log(members);
+            
 
             const response = await axios.post('http://localhost:8080/api/project', {
                 name,

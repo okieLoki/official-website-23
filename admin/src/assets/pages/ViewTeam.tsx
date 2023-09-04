@@ -100,45 +100,47 @@ const TeamTable = () => {
                             className='search-input'
                         />
 
-                        <div className="search-criteria">
-                            <span>Search by:</span>
-                            <Button
-                                size="sm"
-                                variant={searchCriteria === 'name' ? 'solid' : 'outline'}
-                                onClick={() => setSearchCriteria('name')}
-                            >
-                                Name
-                            </Button>
-                            <Button
-                                size="sm"
-                                variant={searchCriteria === 'position' ? 'solid' : 'outline'}
-                                onClick={() => setSearchCriteria('position')}
-                            >
-                                Position
-                            </Button>
-                            <Button
-                                size="sm"
-                                variant={searchCriteria === 'role' ? 'solid' : 'outline'}
-                                onClick={() => setSearchCriteria('role')}
-                            >
-                                Role
-                            </Button>
-                        </div>
-
-                        <div>
-                            <a href="/team/add">
+                        <div className='internal-div'>
+                            <div className="search-criteria">
+    
                                 <Button
-                                    colorScheme="teal"
                                     size="sm"
-                                    onClick={() => console.log('Floating Button Clicked')}
+                                    variant={searchCriteria === 'name' ? 'solid' : 'outline'}
+                                    onClick={() => setSearchCriteria('name')}
                                 >
-                                    Add Member
+                                    Name
                                 </Button>
-                            </a>
+                                <Button
+                                    size="sm"
+                                    variant={searchCriteria === 'position' ? 'solid' : 'outline'}
+                                    onClick={() => setSearchCriteria('position')}
+                                >
+                                    Position
+                                </Button>
+                                <Button
+                                    size="sm"
+                                    variant={searchCriteria === 'role' ? 'solid' : 'outline'}
+                                    onClick={() => setSearchCriteria('role')}
+                                >
+                                    Role
+                                </Button>
+                            </div>
+
+                            <div>
+                                <a href="/team/add">
+                                    <Button
+                                        colorScheme="teal"
+                                        size="sm"
+                                        onClick={() => console.log('Floating Button Clicked')}
+                                    >
+                                        Add Member
+                                    </Button>
+                                </a>
+                            </div>
+
                         </div>
 
                     </div>
-
                     <hr />
 
 
